@@ -53,6 +53,12 @@
                 <input placeholder = "ex: 12345-06-2022.4.01.9999" type="text" id="processNumber" name="processNumber" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
 
+             <!-- Prefência Legal -->
+            <div>
+                <label for="legalPreference" class="block text-sm font-medium text-gray-700 mb-1">Preferência/Prioridade</label>
+                <input type="text" id="legalPreference" name="legalPreference" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
             <!-- Ordem Cronológica -->
             <div>
                 <label for="chronologicalOrder" class="block text-sm font-medium text-gray-700 mb-1">Ordem Cronológica:</label>
@@ -86,13 +92,13 @@
         <section class="mb-8">
             <!-- Relatório do Processo (Maior campo) -->
             <label for="processReport" class="block text-sm font-medium text-gray-700 mb-1">Relatório:</label>
-            <textarea id="processReport" name="processReport" rows="7" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
+            <textarea id="processReport" name="processReport" rows="6" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
         </section>
 
         <section>
             <!-- Campo para Anotações da Desembargadora (Maior campo) -->
             <label for="judgeNotes" class="block text-sm font-medium text-gray-700 mb-1">Observações :</label>
-            <div id="judgeNotes" name="judgeNotes" rows="12" class="w-full h-60 p-3 border border-blue-200 rounded-md shadow-sm"></div>
+            <div id="judgeNotes" name="judgeNotes" rows="12" class="w-full h-40 p-3 border border-blue-200 rounded-md shadow-sm"></div>
         </section>
 
         <footer class="mt-8 text-center text-gray-500 text-sm">
