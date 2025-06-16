@@ -21,6 +21,21 @@
             box-shadow: 0 0 0 3px rgba(144, 202, 249, 0.5); /* Sombra azul clara para o foco */
             transition: all 0.2s ease-in-out;
         }
+
+       /* Estilo para a div temporária que substitui o textarea no PDF */
+        .pdf-text {
+            white-space: pre-line;
+            word-wrap: break-word;
+            border: 1px solid #CBD5E0 !important; /* Borda igual ao textarea */
+            border-radius: 6px !important;
+            padding: 12px !important;
+            background: white !important;
+            margin-bottom: 16px !important;
+            width: 100% !important;
+            min-height: 100px; /* Altura mínima para campos grandes */
+            font-size: 12px !important;
+            line-height: 1.4 !important; /* Melhora a legibilidade */
+        }
         /* Estilo para o botão de gerar PDF */
         .pdf-button {
             background-color: #64B5F6; /* Azul claro */
@@ -35,6 +50,21 @@
         }
         .pdf-button:hover {
             background-color: #42A5F5; /* Azul um pouco mais escuro ao passar o mouse */
+        }
+
+        /* Diminui a fonte de inputs, textareas e selects no PDF */
+        .pdf-mode input,
+        .pdf-mode textarea,
+        .pdf-mode select,
+        .pdf-mode .pdf-text {
+            font-size: 12px !important; /* Tamanho menor (ajuste conforme necessário) */
+        }
+
+        /* Garante que selects e inputs tenham estilo consistente */
+        .pdf-mode select,
+        .pdf-mode input {
+            padding: 6px 8px !important; /* Padding reduzido */
+            height: auto !important;
         }
     </style>
 </head>
@@ -91,7 +121,7 @@
 
         <section class="mb-8">
             <!-- Relatório do Processo (Maior campo) -->
-            <label for="processReport" class="block text-sm font-medium text-gray-700 mb-1">Relatório:</label>
+            <label for="processReport" class="block text-sm font-small text-gray-700 mb-1">Relatório:</label>
             <textarea id="processReport" name="processReport" rows="6" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
         </section>
 
@@ -110,19 +140,30 @@
     <button id="generatePdfButton" class="pdf-button mt-4">Gerar PDF</button>
 
     <script>
-       document.getElementById('generatePdfButton').addEventListener('click', function () {
+    document.getElementById('generatePdfButton').addEventListener('click', function () {
     const element = document.getElementById('document-content');
+    const originalHTML = element.innerHTML;
     
-    // Guarda os estilos originais para restaurar depois
-    const originalPadding = element.style.padding;
+    // Adiciona uma classe que diminui a fonte dos inputs
+    element.classList.add('pdf-mode');
     
-    // Adiciona padding interno apenas para o PDF
-    element.style.padding = '0 20px'; // 20px nas laterais
-    
+    // Substitui quebras de linha por <br> e ajusta textareas
+    const textareas = element.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        const value = textarea.value.replace(/\n/g, '<br>');
+        const tempDiv = document.createElement('div');
+        tempDiv.className = 'pdf-text';
+        tempDiv.innerHTML = value;
+        tempDiv.style.border = '1px solid #CBD5E0';
+        tempDiv.style.borderRadius = '6px';
+        tempDiv.style.padding = '8px'; // Padding menor para economizar espaço
+        textarea.parentNode.insertBefore(tempDiv, textarea);
+        textarea.style.display = 'none';
+    });
+
     const opt = {
-        margin: [10, 15, 10, 15], // Margens: topo, esquerda, fundo, direita (em mm)
+        margin: [10, 15, 10, 15],
         filename: 'audiencia.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
             scale: 3,
             scrollY: 0,
@@ -131,14 +172,12 @@
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Gera o PDF
     html2pdf()
         .set(opt)
         .from(element)
         .save()
         .then(() => {
-            // Restaura o padding original após gerar o PDF
-            element.style.padding = originalPadding;
+            element.innerHTML = originalHTML; // Restaura o HTML original
         });
 });
     </script>
