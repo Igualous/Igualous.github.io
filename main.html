@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audiência</title>
+    <!-- Inclui o Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inclui a biblioteca html2pdf.js para gerar PDFs no navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Define a fonte Inter como padrão para uma leitura agradável */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e3f2fd; /* Azul bebê muito claro para o fundo */
+        }
+        /* Estilos adicionais para o foco e transições de elementos de formulário */
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #90CAF9; /* Azul bebê mais vibrante para o foco */
+            box-shadow: 0 0 0 3px rgba(144, 202, 249, 0.5); /* Sombra azul clara para o foco */
+            transition: all 0.2s ease-in-out;
+        }
+        /* Estilo para o botão de gerar PDF */
+        .pdf-button {
+            background-color: #64B5F6; /* Azul claro */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .pdf-button:hover {
+            background-color: #42A5F5; /* Azul um pouco mais escuro ao passar o mouse */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 min-h-screen flex flex-col items-center justify-center">
+
+    <div id="document-content" class="container mx-auto bg-white shadow-xl rounded-lg p-6 sm:p-10 max-w-6xl w-full mb-8">
+        <header class="mb-8 border-b pb-4 border-blue-200">
+            <h1 class="text-3xl font-bold text-blue-800 mb-2 text-center">Informações do Processo</h1>
+            <p class="text-blue-600 text-center">Gabinete da Desembargadora Federal Rosimayre Gonçalves de Carvalho</p>
+        </header>
+
+       <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Número do Processo -->
+            <div>
+                <label for="processNumber" class="block text-sm font-medium text-gray-700 mb-1">Número do Processo:</label>
+                <input placeholder = "ex: 12345-06-2022.4.01.9999" type="text" id="processNumber" name="processNumber" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Ordem Cronológica -->
+            <div>
+                <label for="chronologicalOrder" class="block text-sm font-medium text-gray-700 mb-1">Ordem Cronológica:</label>
+                <input type="number" id="chronologicalOrder" name="chronologicalOrder" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Situação do Processo -->
+            <div>
+                <label for="processStatus" class="block text-sm font-medium text-gray-700 mb-1">Situação do Processo:</label>
+                <input placeholder = "ex: Preparar Relatório e Voto" type="text" id="processStatus" name="processStatus" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Modalidade da Audiência -->
+            <div>
+                <label for="hearingModality" class="block text-sm font-medium text-gray-700 mb-1">Modalidade da Audiência:</label>
+                <select id="hearingModality" name="hearingModality" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Selecione...</option>
+                    <option value="presencial">Presencial</option>
+                    <option value="telepresencial">Virtual (via Teams)</option>
+                
+                </select>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <!-- Nome dos Advogados -->
+            <label for="lawyerNames" class="block text-sm font-medium text-gray-700 mb-1">Nome(s) do(s) Advogado(s):</label>
+            <textarea id="lawyerNames" name="lawyerNames" rows="2" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Insira o(s) nome(s) completo(s) do(s) advogado(s)"></textarea>
+        </section>
+
+        <section class="mb-8">
+            <!-- Relatório do Processo (Maior campo) -->
+            <label for="processReport" class="block text-sm font-medium text-gray-700 mb-1">Relatório:</label>
+            <textarea id="processReport" name="processReport" rows="7" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
+        </section>
+
+        <section>
+            <!-- Campo para Anotações da Desembargadora (Maior campo) -->
+            <label for="judgeNotes" class="block text-sm font-medium text-gray-700 mb-1">Observações :</label>
+            <div id="judgeNotes" name="judgeNotes" rows="12" class="w-full h-60 p-3 border border-blue-200 rounded-md shadow-sm"></div>
+        </section>
+
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2025   Gabinete da Desembargadora Rosimayre Gonçalves de Carvalho. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <!-- Botão para gerar o PDF -->
+    <button id="generatePdfButton" class="pdf-button mt-4">Gerar PDF</button>
+
+    <script>
+       document.getElementById('generatePdfButton').addEventListener('click', function () {
+    const element = document.getElementById('document-content');
+    
+    // Guarda os estilos originais para restaurar depois
+    const originalPadding = element.style.padding;
+    
+    // Adiciona padding interno apenas para o PDF
+    element.style.padding = '0 20px'; // 20px nas laterais
+    
+    const opt = {
+        margin: [10, 15, 10, 15], // Margens: topo, esquerda, fundo, direita (em mm)
+        filename: 'audiencia.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 3,
+            scrollY: 0,
+            windowHeight: element.scrollHeight
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Gera o PDF
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(() => {
+            // Restaura o padding original após gerar o PDF
+            element.style.padding = originalPadding;
+        });
+});
+    </script>
+
+</body>
+</html>
