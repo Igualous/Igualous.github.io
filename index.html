@@ -53,11 +53,11 @@
         }
 
         /* Diminui a fonte de inputs, textareas e selects no PDF */
-        .pdf-mode input,
+        
         .pdf-mode textarea,
         .pdf-mode select,
         .pdf-mode .pdf-text {
-            font-size: 12px !important; /* Tamanho menor (ajuste conforme necessário) */
+            font-size: 12px; /* Tamanho menor (ajuste conforme necessário) */
         }
 
         /* Garante que selects e inputs tenham estilo consistente */
@@ -72,18 +72,16 @@
 <body class="p-4 sm:p-8 min-h-screen flex flex-col items-center justify-center">
 
     <div id="document-content" class="container mx-auto bg-white shadow-xl rounded-lg p-6 sm:p-10 max-w-6xl w-full mb-8">
-        <header class="mb-8 border-b pb-4 border-blue-200">
-            <h1 class="text-3xl font-bold text-blue-800 mb-2 text-center">Informações do Processo</h1>
+        <header class="mb-8 border-b pb-4 border-blue-200 text-center">
+            <!-- Número do Processo -->
+            <div class="flex text-3xl font-bold text-blue-800 mb-2 text-center flex-row justify-center margin-top">
+                <h1 class="">Processo nº</h1>
+                <input placeholder = "ex: 12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
+            </div>
             <p class="text-blue-600 text-center">Gabinete da Desembargadora Federal Rosimayre Gonçalves de Carvalho</p>
         </header>
 
        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <!-- Número do Processo -->
-            <div>
-                <label for="processNumber" class="block text-sm font-medium text-gray-700 mb-1">Número do Processo:</label>
-                <input placeholder = "ex: 12345-06-2022.4.01.9999" type="text" id="processNumber" name="processNumber" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
              <!-- Prefência Legal -->
             <div>
                 <label for="legalPreference" class="block text-sm font-medium text-gray-700 mb-1">Preferência/Prioridade</label>
