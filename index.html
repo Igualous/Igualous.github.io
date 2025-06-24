@@ -78,7 +78,7 @@
             <!-- Número do Processo -->
             <div class="flex text-3xl font-bold text-blue-800 mb-2 text-center flex-row justify-center margin-top">
                 <label id="processNumber" class="text-3xl font-bold text-blue-800 mb-2 text-center">Processo nº</label>
-                <input placeholder = "12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
+                <input id="numeroDoProcesso" placeholder = "12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
             </div>
             <div>
                 <input type="text" class="text-3xl font-bold text-blue-800 mb-2 text-center w-40" id="data" placeholder="dd/mm">
@@ -204,9 +204,11 @@
         textarea.style.display = 'none';
     });
 
+    const NumeroProcesso = document.getElementById('numeroDoProcesso').value;
+
     const opt = {
         margin: [10, 15, 10, 15],
-        filename: 'audiencia.pdf',
+        filename: `${NumeroProcesso}.pdf`,
         html2canvas: { 
             scale: 3,
             scrollY: 0,
