@@ -54,10 +54,8 @@
 
         /* Diminui a fonte de inputs, textareas e selects no PDF */
         
-        .pdf-mode textarea,
-        .pdf-mode select,
-        .pdf-mode .pdf-text {
-            font-size: 12px; /* Tamanho menor (ajuste conforme necessário) */
+        .pdf-mode #Relator {
+            font-size: 12px; /* Tamanho menor (para caber o nome da dra.) */
         }
 
         /* Garante que selects e inputs tenham estilo consistente */
@@ -75,8 +73,13 @@
         <header class="mb-8 border-b pb-4 border-blue-200 text-center">
             <!-- Número do Processo -->
             <div class="flex text-3xl font-bold text-blue-800 mb-2 text-center flex-row justify-center margin-top">
-                <h1 class="">Processo nº</h1>
-                <input placeholder = "ex: 12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
+                <label class="text-3xl font-bold text-blue-800 mb-2 text-center">Processo nº</label>
+                <input placeholder = "12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
+            </div>
+            <div>
+                <input type="text" class="text-3xl font-bold text-blue-800 mb-2 text-center w-40" id="data" placeholder="dd/mm">
+
+                <input type="time" class="text-3xl font-bold text-blue-800 mb-2 text-center">
             </div>
             <p class="text-blue-600 text-center">Gabinete da Desembargadora Federal Rosimayre Gonçalves de Carvalho</p>
         </header>
@@ -129,18 +132,18 @@
                 <label for="Minuteiro" class="block text-sm font-medium text-gray-700 mb-1">Minuteiro do Processo:</label>
                 <select id="Minuteiro" name="Minuteiro" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Selecione...</option>
-                    <option value="">Ângela</option>
-                    <option value="">Andrea</option>
-                    <option value="">Andréia</option>
-                    <option value="">Andreas</option>
-                    <option value="">Armea</option> 
-                    <option value="">Ariane</option>
-                    <option value="">Artur</option>
-                    <option value="">Diogo</option>
-                    <option value="">Meire</option>
-                    <option value="">Mirela</option>
-                    <option value="">Rosirene</option>
-                    <option value="">Thiago</option>
+                    <option value="Angela">Ângela</option>
+                    <option value="Andrea">Andrea</option>
+                    <option value="Andreia">Andréia</option>
+                    <option value="Andreas">Andreas</option>
+                    <option value="Armea">Armea</option> 
+                    <option value="Ariane">Ariane</option>
+                    <option value="Artur">Artur</option>
+                    <option value="Diogo">Diogo</option>
+                    <option value="Meire">Meire</option>
+                    <option value="Mirela">Mirela</option>
+                    <option value="Rosirene">Rosirene</option>
+                    <option value="Thiago">Thiago</option>
 
                 
                 </select>
@@ -216,6 +219,13 @@
             element.innerHTML = originalHTML; // Restaura o HTML original
         });
 });
+
+ document.getElementById('data').addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+                        if (value.length > 2) value = value.slice(0,2) + '/' + value.slice(2);
+                        if (value.length > 5) value = value.slice(0,5); 
+                        e.target.value = value;
+                    });
     </script>
 
 </body>
