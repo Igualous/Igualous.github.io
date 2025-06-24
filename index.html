@@ -65,6 +65,10 @@
             height: auto !important;
         }
 
+        .pdf-mode #processNumber {
+            margin-top: 5px;
+        }
+
     </style>
 </head>
 <body class="p-4 sm:p-8 min-h-screen flex flex-col items-center justify-center">
@@ -73,7 +77,7 @@
         <header class="mb-8 border-b pb-4 border-blue-200 text-center">
             <!-- Número do Processo -->
             <div class="flex text-3xl font-bold text-blue-800 mb-2 text-center flex-row justify-center margin-top">
-                <label class="text-3xl font-bold text-blue-800 mb-2 text-center">Processo nº</label>
+                <label id="processNumber" class="text-3xl font-bold text-blue-800 mb-2 text-center">Processo nº</label>
                 <input placeholder = "12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 text-center">
             </div>
             <div>
