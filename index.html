@@ -33,7 +33,7 @@
             margin-bottom: 16px !important;
             width: 100% !important;
             min-height: 0px; /* Altura mínima para campos grandes */
-            font-size: 12px !important;
+            font-size: 14px !important;
             line-height: 1.4 !important; /* Melhora a legibilidade */
         }
         /* Estilo para o botão de gerar PDF */
@@ -54,36 +54,56 @@
 
         /* Diminui a fonte de inputs, textareas e selects no PDF */
         
-        .pdf-mode #Relator {
-            font-size: 12px; /* Tamanho menor (para caber o nome da dra.) */
-        }
 
         /* Garante que selects e inputs tenham estilo consistente */
-        .pdf-mode select,
-        .pdf-mode input {
+        .pdf-mode section {
             padding: 6px 8px !important; /* Padding reduzido */
-            height: auto !important;
+            font-size: 14px; /* Tamanho menor (para caber o nome da dra.) */
+            margin: 5px;
+        }
+
+        .pdf-mode section input,
+        .pdf-mode section select {
+            padding: 6px;
+            margin:0px;
         }
 
         .pdf-mode #processType {
-            margin-top: 5px;
+            margin-top: 0px;
         }
 
+        .pdf-mode .relatorio {
+            font-size: 20px;
+            margin-top: 0px;
+        }
+
+        .pdf-mode #Partes {
+             width: 100%;
+            font-size: 12px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
         #Partes {
             width: 100%;
-            font-size: 22px;
+            font-size: 18px;
             margin-top: 5px;
             margin-bottom: 5px;
         }
 
         #processType {
-            width: 150px;
+            width: 210px;
             margin-right: 10px;
         }
 
+        #observacoes {
+            page-break-before: always;
+        }
+        
+
+
     </style>
 </head>
-<body class="p-4 sm:p-8 min-h-screen flex flex-col items-center justify-center">
+<body class="sm:p-8 min-h-screen flex flex-col items-center">
 
     <div id="document-content" class="container mx-auto bg-white shadow-xl rounded-lg p-6 sm:p-10 max-w-6xl w-full mb-8">
         <header class="mb-8 border-b pb-4 border-blue-200 text-center">
@@ -92,8 +112,8 @@
                 <input type="text" id="processType" class="text-3xl font-bold text-blue-800 mb-2 text-right" placeholder="ApCiv">
                 <input type="text" id="numeroDoProcesso" placeholder = "12345-06-2022.4.01.9999" class="processNumber text-3xl font-bold text-blue-800 mb-2 ml-2 text-left">
             </div>
-            <div class="mx-auto">
-                <input id="Partes" placeholder = "APELANTE X APELADO" class="Partes text-3xl font-bold text-blue-800 mb-2 text-center">
+            <div>
+                <input id="Partes" placeholder = "APELANTE X APELADO" class="Partes text-2xl font-bold text-blue-800 mb-2 text-center">
             </div>
             <div>
                 <input type="text" class="text-3xl font-bold text-blue-800 mb-2 text-center w-40" id="data" placeholder="dd/mm">
@@ -104,22 +124,34 @@
         </header>
 
        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-             <!-- Prefência Legal -->
+             <!-- Preferência Legal -->
             <div>
-                <label for="legalPreference" class="block text-sm font-medium text-gray-700 mb-1">Preferência/Prioridade</label>
+                <label for="legalPreference" class="block text- font-medium text-gray-700 mb-1">Preferência/Prioridade</label>
                 <input type="text" id="legalPreference" name="legalPreference" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Ordem Cronológica -->
             <div>
                 <label for="chronologicalOrder" class="block text-sm font-medium text-gray-700 mb-1">Ordem Cronológica:</label>
-                <input type="number" id="chronologicalOrder" name="chronologicalOrder" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <input type="text" id="chronologicalOrder" name="chronologicalOrder" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- Situação do Processo -->
             <div>
                 <label for="processStatus" class="block text-sm font-medium text-gray-700 mb-1">Situação do Processo:</label>
-                <input placeholder = "ex: Preparar Relatório e Voto" type="text" id="processStatus" name="processStatus" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <div class="flex">
+                    <select id="processStatus" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Selecione...</option>
+                        <option value="AguardandoSessao">Aguardando sessão</option>
+                        <option value="IncluidoPauta">Incluído em pauta</option>
+                        <option value="Aguardando">Aguardando elaboração de minuta</option>
+                        <option value="Aguardando">Aguardando distribuição</option>
+                        <option value="Aguardando">Pedido liminar</option>
+                        <option value="Aguardando">Aguardando análise (urgência)</option>
+                    </select> 
+                    <input type="text" class="hidden text-1xl font-bold text-black-800 text-center w-20" id="dataPauta" placeholder="dd/mm">
+
+                </div>
             </div>
 
             <!-- Modalidade da Audiência -->
@@ -137,9 +169,9 @@
             <div>
                 <label for="Relator" class="block text-sm font-medium text-gray-700 mb-1">Relator do Processo:</label>
                 <select id="Relator" name="Relator" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">DES. ROSIMAYRE GONÇALVES DE CARVALHO</option>
-                    <option value="Nelson">JUIZ FEDERAL NELSON LIU PITANGA</option> 
-                    <option value="Urbano">DES. URBANO LEAL BERQUÓ NETO</option>
+                    <option value="">DES. ROSIMAYRE GONÇALVES </option>
+                    <option value="Nelson">JUIZ FEDERAL NELSON LIU </option> 
+                    <option value="Urbano">DES. URBANO LEAL BERQUÓ </option>
                     <option value="Scarpa">DES. ANTÔNIO SCARPA</option>
                     <option value="Euler">DES. EULER DE ALMEIDA</option>
                 
@@ -171,22 +203,22 @@
 
         </section>
 
-        <section class="mb-8">
+        <section class="mb-4">
             <!-- Nome dos Advogados -->
             <label for="lawyerNames" class="block text-sm font-medium text-gray-700 mb-1">Nome(s) do(s) Advogado(s):</label>
             <textarea id="lawyerNames" name="lawyerNames" rows="1" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Insira o(s) nome(s) completo(s) do(s) advogado(s)"></textarea>
         </section>
 
-        <section class="mb-8">
+        <section class="mb-4">
             <!-- Relatório do Processo (Maior campo) -->
             <label for="processReport" class="block text-sm font-small text-gray-700 mb-1">Relatório:</label>
-            <textarea id="processReport" name="processReport" rows="5" class="w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
+            <textarea id="processReport" name="processReport" rows="5" class="relatorio w-full p-3 border border-blue-200 rounded-md shadow-sm" placeholder="Detalhes do processo, histórico, pontos chave, etc."></textarea>
         </section>
 
-        <section>
+        <section id="observacoes">
             <!-- Campo para Anotações da Desembargadora (Maior campo) -->
             <label for="judgeNotes" class="block text-sm font-medium text-gray-700 mb-1">Observações :</label>
-            <div id="judgeNotes" name="judgeNotes" rows="12" class="w-full h-40 p-3 border border-blue-200 rounded-md shadow-sm"></div>
+            <div id="judgeNotes" name="judgeNotes"  class="w-full h-80 p-3 border border-blue-200 rounded-md shadow-sm"></div>
         </section>
 
         <footer class="mt-8 text-center text-gray-500 text-sm">
@@ -240,13 +272,37 @@
             element.innerHTML = originalHTML; // Restaura o HTML original
         });
 });
-
+    // formata a data da AUDIENCIA
  document.getElementById('data').addEventListener('input', function(e) {
                         let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
                         if (value.length > 2) value = value.slice(0,2) + '/' + value.slice(2);
                         if (value.length > 5) value = value.slice(0,5); 
                         e.target.value = value;
                     });
+    // formata a data da PAUTA
+    document.getElementById('dataPauta').addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+                        if (value.length > 2) value = value.slice(0,2) + '/' + value.slice(2);
+                        if (value.length > 5) value = value.slice(0,5); 
+                        e.target.value = value;
+                    });       
+                    
+    // dropdown situação do processo
+     const select = document.getElementById('processStatus');
+                        const dataPauta = document.getElementById('dataPauta');
+                        
+                        select.addEventListener('change', () => {
+                            if (select.value === 'IncluidoPauta' || select.value === "AguardandoSessao") {
+                                dataPauta.classList.remove('hidden');
+                                dataPauta.classList.add('inline');
+                            } else {
+                                dataPauta.classList.add('hidden');
+                                dataPauta.classList.add('inline');
+                            }
+                        });
+
+        // quebra de pagina antes de observacoes
+        document.getElementById('observacoes').style.pageBreakBefore = 'always';
     </script>
 
 </body>
